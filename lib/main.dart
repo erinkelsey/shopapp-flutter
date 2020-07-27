@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
+      // best to use create when potential for adding new
+      // instanses of objects
       create: (ctx) => Products(),
       child: MaterialApp(
           title: 'Trés Chic Shop',
