@@ -78,6 +78,29 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes [CartItem] from [Cart] for [productId]
+  ///
+  /// If quantity of [CartItem] with [productId] is greater
+  /// than 1, reduce the quantity, else remove the item
+  /// from [Cart] entirely.
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) return;
+    if (_items[productId].quantity > 1) {
+      _items.update(
+        productId,
+        (existingCartItem) => CartItem(
+          id: existingCartItem.id,
+          title: existingCartItem.title,
+          price: existingCartItem.price,
+          quantity: existingCartItem.quantity - 1,
+        ),
+      );
+    } else {
+      _items.remove(productId);
+    }
+    notifyListeners();
+  }
+
   /// Clear cart by setting it back to an empty map.
   void clear() {
     _items = {};
