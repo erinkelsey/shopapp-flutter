@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../screens/cart_screen.dart';
 import '../widgets/products_grid.dart';
-import '../providers/products.dart';
+import '../widgets/badge.dart';
+import '../providers/cart.dart';
 
 enum FilterOptions {
   Favorites,
@@ -40,10 +42,28 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           ),
           itemBuilder: (_) => [
             PopupMenuItem(
-                child: Text('Only Favorites'), value: FilterOptions.Favorites),
-            PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
+              child: Text('Only Favorites'),
+              value: FilterOptions.Favorites,
+            ),
+            PopupMenuItem(
+              child: Text('Show All'),
+              value: FilterOptions.All,
+            ),
           ],
-        )
+        ),
+        Consumer<Cart>(
+          builder: (_, cart, ch) => Badge(
+            child: ch,
+            value: cart.itemCount.toString(),
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+            ),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(CartScreen.routeName),
+          ),
+        ),
       ]),
       body: Container(
         margin: isLandscapeWeb ? EdgeInsets.all(20) : null,
