@@ -5,10 +5,18 @@ import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
 import '../providers/cart.dart';
 
+/// Widget for displaying product details in a [GridTile].
+///
+/// Shows a [SnackBar] when product is added to [Cart].
+///
+/// Toggle marking this product as a favorite.
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /// The [Product] to dispaly details of.
     final product = Provider.of<Product>(context, listen: false);
+
+    /// The [Cart] that the product can be added to.
     final cart = Provider.of<Cart>(context, listen: false);
 
     return ClipRRect(

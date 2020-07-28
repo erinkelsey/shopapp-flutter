@@ -4,7 +4,12 @@ import 'package:provider/provider.dart';
 import '../providers/product.dart';
 import '../providers/products.dart';
 
+/// Widget for the screen where user's can edit and add
+/// [Product] items.
+///
+/// [routeName] to navigate to this page is '/edit-product'
 class EditProductScreen extends StatefulWidget {
+  /// Route used to navigate to this page.
   static const routeName = '/edit-product';
 
   @override

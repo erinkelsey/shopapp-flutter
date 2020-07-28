@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/orders_screen.dart';
 import '../screens/user_products_screen.dart';
 
+/// Widget for building the main Drawer for the app.
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

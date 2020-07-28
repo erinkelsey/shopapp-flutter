@@ -5,7 +5,13 @@ import '../providers/orders.dart';
 import '../widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
 
+/// Widget for the displaying the Orders screen.
+///
+/// Shows a list of all [OrderItem] object in [Orders].
+///
+/// [routeName] to navigate to this page is '/orders
 class OrdersScreen extends StatelessWidget {
+  /// Route used to navigate to this page.
   static const routeName = '/orders';
 
   @override
