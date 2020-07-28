@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Widget to create a badge.
+///
+/// Widget accepts the value to be displayed in the badge,
+/// the child that the badge will be stacked on top of,
+/// and the background color for the badge (optional).
 class Badge extends StatelessWidget {
   const Badge({
     Key key,
@@ -8,8 +13,13 @@ class Badge extends StatelessWidget {
     this.color,
   }) : super(key: key);
 
+  /// The child item that this badge is stacked on.
   final Widget child;
+
+  /// The value to be displayed in the badge.
   final String value;
+
+  /// (OPTIONAL) The background color of the badge.
   final Color color;
 
   @override
