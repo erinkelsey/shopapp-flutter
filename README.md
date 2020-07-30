@@ -2,7 +2,7 @@
 
 A simple Shop app using Flutter and Dart for iOS, Android and web.
 
-Hosted web example here:
+Hosted web example here: http://shop-app-flutter.s3-website.ca-central-1.amazonaws.com
 
 ## Functionality
 
