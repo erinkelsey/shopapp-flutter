@@ -1,6 +1,6 @@
 ## About
 
-A simple Shop app using Flutter and Dart for iOS, Android and web.
+A simple Shop app using Flutter and Dart for iOS, Android and web. The app uses Firebase Authentication and Database for the backend.
 
 Hosted web example here: http://shop-app-flutter.s3-website.ca-central-1.amazonaws.com
 
@@ -8,7 +8,10 @@ Hosted web example here: http://shop-app-flutter.s3-website.ca-central-1.amazona
 
 - Basic authentication -> signup, login, logout
 - Add products that can be ordered through the store
-- Favorite products
+- Mark products as favorite
+- Add products to cart
+- Order products in cart
+- View all previous orders
 
 ## Install and Setup
 
