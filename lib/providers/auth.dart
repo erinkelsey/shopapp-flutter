@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
   String _userId;
+  Timer _authTimer;
 
   Future<void> _authenticate(
       String email, String password, String urlNoAPIKey) async {
@@ -39,6 +41,10 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
+
+      // start logout timer
+      _autoLogout();
+
       notifyListeners();
     } catch (error) {
       // throw through to widget
@@ -73,5 +79,24 @@ class Auth with ChangeNotifier {
   Future<void> login(String email, String password) async {
     return _authenticate(email, password,
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=');
+  }
+
+  void logout() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+
+    if (_authTimer != null) _authTimer.cancel();
+
+    notifyListeners();
+  }
+
+  void _autoLogout() {
+    // cancel any existing timer
+    if (_authTimer != null) _authTimer.cancel();
+
+    final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
+
+    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }
