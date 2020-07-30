@@ -48,7 +48,7 @@ class Orders with ChangeNotifier {
               .map(
                 (item) => CartItem(
                   id: item['id'],
-                  price: item['price'],
+                  price: item['price'].toDouble(),
                   quantity: item['quantity'],
                   title: item['title'],
                 ),
