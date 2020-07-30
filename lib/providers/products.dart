@@ -63,11 +63,11 @@ class Products with ChangeNotifier {
     final filterString =
         filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
 
-    final url =
-        'https://shop-app-flutter-e7a32.firebaseio.com/products.json?auth=$authToken$filterString';
+    const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
 
-    final favoriteUrl =
-        'https://shop-app-flutter-e7a32.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+    final url = '${dbUrl}products.json?auth=$authToken$filterString';
+
+    final favoriteUrl = '${dbUrl}userFavorites/$userId.json?auth=$authToken';
 
     try {
       final response = await http.get(url);
@@ -104,8 +104,9 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url =
-        'https://shop-app-flutter-e7a32.firebaseio.com/products.json?auth=$authToken';
+    const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
+
+    final url = '${dbUrl}products.json?auth=$authToken';
 
     try {
       final response = await http.post(
@@ -136,8 +137,8 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url =
-          'https://shop-app-flutter-e7a32.firebaseio.com/products/$id.json?auth=$authToken';
+      const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
+      final url = '${dbUrl}products/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -155,8 +156,8 @@ class Products with ChangeNotifier {
   // in memory,  and adds it back, if there is an deleting on the server
   // if no issue, set point to null to allow removal from memory
   Future<void> deleteProduct(String id) async {
-    final url =
-        'https://shop-app-flutter-e7a32.firebaseio.com/products/$id.json?auth=$authToken';
+    const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
+    final url = '${dbUrl}products/$id.json?auth=$authToken';
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
 

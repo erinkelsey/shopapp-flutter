@@ -48,8 +48,9 @@ class Product with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
 
-    final url =
-        'https://shop-app-flutter-e7a32.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
+    const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
+
+    final url = '${dbUrl}userFavorites/$userId/$id.json?auth=$token';
 
     try {
       final response = await http.put(

@@ -15,8 +15,10 @@ import './providers/orders.dart';
 import './providers/auth.dart';
 
 void main() {
-  const api = String.fromEnvironment('FIREBASE_API_KEY');
-  print(api);
+  // const api = String.fromEnvironment('FIREBASE_API_KEY');
+  // const url = String.fromEnvironment('FIREBASE_DB_URL');
+  // print(api);
+  // print(url);
   runApp(MyApp());
 }
 
