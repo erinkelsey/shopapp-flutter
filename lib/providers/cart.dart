@@ -2,18 +2,9 @@ import 'package:flutter/foundation.dart';
 
 import '../models/cart_item.dart';
 
-/// Provider class for the cart
+/// Provider class for this user's [Cart]
 ///
-/// Cart holds the current items in the cart.
-///
-/// Provides methods to:
-/// - Get all items in cart.
-/// - Get number of items in cart.
-/// - Get total amount of all items in the cart.
-/// - Add an item to the cart.
-/// - Increase quantity of an existing cart item.
-/// - Remove an item to the cart.
-/// - Clear all items out of the cart.
+/// [Cart] holds the current items in the cart.
 class Cart with ChangeNotifier {
   /// The items in the cart.
   Map<String, CartItem> _items = {};

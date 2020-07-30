@@ -17,11 +17,25 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  /// [FocusNode] for price text field. Used to move between fields
+  /// when pressing next on keyboard.
   final _priceFocusNode = FocusNode();
+
+  /// [FocusNode] for description text field.
   final _descriptionFocusNode = FocusNode();
+
+  /// [TextEditingController] for image url field. Used to show the
+  /// image preview.
   final _imageUrlController = TextEditingController();
+
+  /// [FocusNode] for the image url field. Used to get rid of focus on
+  /// field, so that previews is displayed.
   final _imageUrlFocusNode = FocusNode();
+
+  /// Unique key for the product details form.
   final _form = GlobalKey<FormState>();
+
+  /// The current state of the form.
   var _editedProduct = Product(
     id: null,
     title: '',
@@ -29,22 +43,33 @@ class _EditProductScreenState extends State<EditProductScreen> {
     price: 0.0,
     imageUrl: '',
   );
+
+  /// Tracks whether is in initial build of widget.
   var _isInit = true;
+
+  /// Initial values for the form.
   var _initValues = {
     'title': '',
     'description': '',
     'price': '',
     'imageUrl': '',
   };
+
+  /// Tracks whether the form is submitting/loading.
   var _isLoading = false;
 
+  /// Add listener to the image url field, so that the image preview
+  /// can be shown when the field loses focus.
   @override
   void initState() {
     _imageUrlFocusNode.addListener(_updateImageUrl);
     super.initState();
   }
 
-  /// Cant get parameter in initState, therefore need to use
+  /// Initalize the form with values of an existing product. If
+  /// editing a product, not adding a new one.
+  ///
+  /// Can't get parameter in initState, therefore need to use
   /// this method instead.
   @override
   void didChangeDependencies() {
@@ -67,6 +92,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.didChangeDependencies();
   }
 
+  /// Disponse of all focus nodes, and controllers, so no memory leaks.
   @override
   void dispose() {
     _imageUrlFocusNode.removeListener(_updateImageUrl);
@@ -79,12 +105,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.dispose();
   }
 
+  /// Called when moved from image url field to another field.
+  /// Used to show preview of image.
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
       setState(() {});
     }
   }
 
+  /// Called when a user hits save to submit the form.
+  ///
+  /// Checks that the form passes validation. Either adds a new
+  /// product, or updates an existing one, depending on if there
+  /// is an existing product.
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
 

@@ -20,7 +20,7 @@ class ProductItem extends StatelessWidget {
     /// The [Cart] that the product can be added to.
     final cart = Provider.of<Cart>(context, listen: false);
 
-    ///
+    /// The authenticatio data for this user.
     final authData = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(

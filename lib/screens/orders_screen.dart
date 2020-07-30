@@ -8,8 +8,6 @@ import '../widgets/app_drawer.dart';
 /// Widget for the displaying the Orders screen.
 ///
 /// Shows a list of all [OrderItem] object in [Orders].
-///
-/// [routeName] to navigate to this page is '/orders
 class OrdersScreen extends StatefulWidget {
   /// Route used to navigate to this page.
   static const routeName = '/orders';
@@ -21,6 +19,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   var _isLoading = false;
 
+  /// Fetch the orders to display on the screen.
   @override
   void initState() {
     Future.delayed(Duration.zero).then((_) async {

@@ -7,12 +7,12 @@ import '../widgets/user_product_item.dart';
 import '../widgets/app_drawer.dart';
 
 /// Widget for building the screen that displays all of the user's products.
-///
-/// [routeName] to navigate to this screen is '/user-products'
 class UserProductsScreen extends StatelessWidget {
   /// Route used to navigate to this screen.
   static const routeName = '/user-products';
 
+  /// Refreshes the products on the screen. Used in the classic
+  /// pull to refresh way.
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<Products>(context, listen: false)
         .fetchAndSetProducts(true);

@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 
 import '../models/order_item.dart' as ord;
 
+/// Widget for building an individual [OrderItem] from
+/// an [Order].
 class OrderItem extends StatefulWidget {
   final ord.OrderItem order;
 

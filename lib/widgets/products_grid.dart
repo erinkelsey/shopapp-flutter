@@ -5,7 +5,14 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import '../providers/products.dart';
 import './product_item.dart';
 
+/// Widget for building the grid view of [Product] items
+/// for the [ProductOverviewScreen].
+///
+/// Ability to filter for all of the [Product] items, or only the
+/// user's favorites.
 class ProductsGrid extends StatelessWidget {
+  /// Boolean for displaying either all product items, or only
+  /// the user's favorites.
   final bool showFavorites;
 
   ProductsGrid(this.showFavorites);

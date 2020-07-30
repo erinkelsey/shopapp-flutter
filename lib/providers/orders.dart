@@ -6,19 +6,15 @@ import 'package:http/http.dart' as http;
 import '../models/order_item.dart';
 import '../models/cart_item.dart';
 
-/// Provider class for the orders.
-///
-/// Methods:
-/// - addOrder: adds a new order to list of all orders
-///
+/// Provider class for managing all of this user's [Order] items.
 class Orders with ChangeNotifier {
   /// List of OrderItems as all of the orders
   List<OrderItem> _orders = [];
 
-  ///
+  /// This user's authentication token.
   final String authToken;
 
-  ///
+  /// This user's unique id.
   final String userId;
 
   Orders(this.authToken, this.userId, this._orders);
@@ -29,6 +25,7 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
+  /// Fetches all of this user's orders from the server.
   Future<void> fetchAndSetOrders() async {
     const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
     final url = '${dbUrl}orders/$userId.json?auth=$authToken';
@@ -64,11 +61,9 @@ class Orders with ChangeNotifier {
   /// Adds a new order.
   ///
   /// Add new OrderItem to list of orders at beginning
-  /// of list. Notifies any listeners of this provider.
-  ///
-  /// Arguments:
-  /// - cartProducts (List<CartItem>): cart items to add to list
-  /// - total (double): total of the order; total of all items in cart
+  /// of list, with [cartProducts] as the list of [CartItem]
+  /// objects for the [OrderItem], and [total] as the total
+  /// price for the entire order.
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
     final url = '${dbUrl}orders/$userId.json?auth=$authToken';

@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../providers/products.dart';
 
+/// Widget for building the product detail screen.
 class ProductDetailScreen extends StatelessWidget {
+  /// Route for navigating to the product detail screen.
   static const routeName = '/product-detail';
 
   @override

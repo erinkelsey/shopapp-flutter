@@ -3,11 +3,22 @@ import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
 
+/// Widget for building an individual [CartItem] in the user's [Cart].
 class CartItem extends StatelessWidget {
+  /// The unique id for this [CartItem].
   final String id;
+
+  /// The id of the [Product] in this [CartItem].
   final String productId;
+
+  /// The price of this item.
   final double price;
+
+  /// The quantity, or the number of the specific product, being ordered
+  /// for with this item.
   final int quantity;
+
+  /// The title of the [Product].
   final String title;
 
   CartItem(this.id, this.productId, this.price, this.quantity, this.title);

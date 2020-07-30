@@ -6,9 +6,12 @@ import 'package:provider/provider.dart';
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
 
+/// Options for authentication.
 enum AuthMode { Signup, Login }
 
+/// Widget for showing the login/sign up screen
 class AuthScreen extends StatelessWidget {
+  /// Route name for this screen.
   static const routeName = '/auth';
 
   @override
@@ -96,18 +99,36 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard>
     with SingleTickerProviderStateMixin {
+  /// Key for setting and identifiying the login/signup form. Must be unique.
   final GlobalKey<FormState> _formKey = GlobalKey();
+
+  /// Initially set AuthMode to AuthMode.Login, meaning the form shows the option
+  /// for logging in initially, not for signing up.
   AuthMode _authMode = AuthMode.Login;
+
+  /// Credentials for this user. Used in the form.
   Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
+
+  /// Boolean for holding the value tracking if the data for this page is currently loading.
   var _isLoading = false;
+
+  /// Controller for the password form field. If signing up, the password and confirm password
+  /// fields must be equal.
   final _passwordController = TextEditingController();
+
+  /// Controller for the login -> signup transition.
   AnimationController _controller;
+
+  /// Animation for the confirm password text field sliding.
   Animation<Offset> _slideAnimation;
+
+  /// Animation for the confirm password text field appearing.
   Animation<double> _opacityAnimation;
 
+  /// Set up the animations.
   @override
   void initState() {
     super.initState();
@@ -139,12 +160,14 @@ class _AuthCardState extends State<AuthCard>
     // _heightAnimation.addListener(() => setState(() {}));
   }
 
+  /// Dispose of the animation controller.
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
   }
 
+  /// Show [AlertDialog] with error [message].
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -161,6 +184,11 @@ class _AuthCardState extends State<AuthCard>
     );
   }
 
+  /// Called when a form is submitted.
+  ///
+  /// Checks that form passes validation. Calls login or signup method
+  /// depending on the [AuthMode]. Shows any error messages if unable
+  /// to login or signup user.
   void _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -211,6 +239,8 @@ class _AuthCardState extends State<AuthCard>
     });
   }
 
+  /// Switch from [AuthMode.Login] to [AuthMode.Signup]. Calls
+  /// animation for showing/hiding confirm password animation.
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
       setState(() {

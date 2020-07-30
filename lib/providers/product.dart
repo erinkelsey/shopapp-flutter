@@ -40,9 +40,11 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Toggles this product as a favorite.
+  /// Toggles this product as a favorite for this user.
   ///
-  /// Optimistically updates the favorite on the server.
+  /// Optimistically updates the favorite on the server for user with
+  /// [userId] as their unique identifier, and [token] as the
+  /// authentication token.
   Future<void> toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;

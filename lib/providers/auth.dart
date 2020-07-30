@@ -7,12 +7,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/http_exception.dart';
 
+/// Provider class for handling authentication.
 class Auth with ChangeNotifier {
+  /// User token for authentication on web server.
   String _token;
+
+  /// Expiry date of the token.
   DateTime _expiryDate;
+
+  /// User's unique ID on the web server.
   String _userId;
+
+  /// Timer that counts down to token expiry.
   Timer _authTimer;
 
+  /// Method to handle the HTTP request for authentiation
+  /// to the web server.
+  ///
+  /// Handles both login and sign up, depending on the [urlNoAPIKey] that
+  /// is passed in. Credentials are [email] and [password].
   Future<void> _authenticate(
       String email, String password, String urlNoAPIKey) async {
     const api_key = String.fromEnvironment('FIREBASE_API_KEY');
@@ -60,14 +73,16 @@ class Auth with ChangeNotifier {
       // throw through to widget
       throw error;
     }
-
-    // print(json.decode(response.body));
   }
 
+  /// Returns a boolean value of true if the user
+  /// is authenticated/logged in.
   bool get isAuth {
     return token != null;
   }
 
+  /// Returns the [token] for this user, if the user
+  /// has a [token], else returns null.
   String get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
@@ -77,20 +92,28 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  /// Returns the [userId] for this user.
   String get userId {
     return _userId;
   }
 
+  /// Method for signing up a user with [email] and [password]
+  /// as their credentials.
   Future<void> signup(String email, String password) async {
     return _authenticate(email, password,
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=');
   }
 
+  /// Method for loggin in a user with [email] and [password] as their credentials.
   Future<void> login(String email, String password) async {
     return _authenticate(email, password,
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=');
   }
 
+  /// Method checking if the user is already logged in.
+  ///
+  /// Returns true if user has valid credentials saved in Shared Preferences/local storage,
+  /// otherwise returns false,
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) return false;
@@ -112,6 +135,10 @@ class Auth with ChangeNotifier {
     return true;
   }
 
+  /// Method to logout the user on this device.
+  ///
+  /// Removes the user's credentials stored in SharedPreferences,
+  /// or local storage. Cancels countdown timer for expiry logout.
   Future<void> logout() async {
     _token = null;
     _userId = null;
@@ -127,6 +154,8 @@ class Auth with ChangeNotifier {
     prefs.clear();
   }
 
+  /// Automatically logs out user once their [token] expires, meaning
+  /// that the [_authTimer] has expired.
   void _autoLogout() {
     // cancel any existing timer
     if (_authTimer != null) _authTimer.cancel();

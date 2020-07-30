@@ -6,10 +6,15 @@ import 'package:http/http.dart' as http;
 import './product.dart';
 import '../models/http_exception.dart';
 
+/// Provider class for containing a list of [Product] items
 class Products with ChangeNotifier {
+  /// The authentication token for this user.
   final String authToken;
+
+  /// The unique identifier for this user.
   final String userId;
 
+  /// The [Product] items to return.
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -47,18 +52,26 @@ class Products with ChangeNotifier {
 
   Products(this.authToken, this.userId, this._items);
 
+  /// Returns a list of [Product] items.
   List<Product> get items {
     return [..._items];
   }
 
+  /// Returns a list of [Product] items that are favorites of
+  /// this user.
   List<Product> get favoriteItems {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
+  /// Find a specific [Product] item in [Products] with [id].
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
+  /// Gets all of the products requested from the web server.
+  ///
+  /// If [filterByUser] is set to false (default), gets all of the products, else
+  /// only gets this user's products.
   Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     final filterString =
         filterByUser ? '&orderBy="creatorId"&equalTo="$userId"' : '';
@@ -103,6 +116,9 @@ class Products with ChangeNotifier {
     }
   }
 
+  /// Sends [product] to the server to create a new [Product].
+  ///
+  /// [Product] is linked to this user, as the creator of the product.
   Future<void> addProduct(Product product) async {
     const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
 
@@ -134,6 +150,10 @@ class Products with ChangeNotifier {
     }
   }
 
+  /// Updates a [Product] on the server with [id], by setting it to [newProduct].
+  ///
+  /// Only this user can update this user's products. This user cannot update
+  /// products created by another user.
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
@@ -155,6 +175,8 @@ class Products with ChangeNotifier {
   // removes product from local cache, but keeps a pointer to it
   // in memory,  and adds it back, if there is an deleting on the server
   // if no issue, set point to null to allow removal from memory
+
+  /// Deletes a [Product] from server with [id].
   Future<void> deleteProduct(String id) async {
     const dbUrl = String.fromEnvironment('FIREBASE_DB_URL');
     final url = '${dbUrl}products/$id.json?auth=$authToken';

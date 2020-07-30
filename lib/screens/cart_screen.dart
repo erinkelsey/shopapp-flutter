@@ -5,7 +5,10 @@ import '../providers/cart.dart';
 import '../widgets/cart_item.dart';
 import '../providers/orders.dart';
 
+/// Widget for the screen showing the user's [Cart] containing
+/// all of the [CartItem] objects in it.
 class CartScreen extends StatelessWidget {
+  /// Route name for navigating to screen.
   static const routeName = '/cart';
 
   @override
@@ -70,12 +73,16 @@ class CartScreen extends StatelessWidget {
   }
 }
 
+/// Widget for the [CartScreen] order button.
+///
+/// Shows a spinner when pressed, so user cannot press again.
 class OrderButton extends StatefulWidget {
   const OrderButton({
     Key key,
     @required this.cart,
   }) : super(key: key);
 
+  /// User's current [Cart] with all of the [CartItem]s currently in it.
   final Cart cart;
 
   @override
