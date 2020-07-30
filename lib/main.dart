@@ -38,9 +38,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProxyProvider<Auth, Products>(
             // best to use create when potential for adding new
             // instanses of objects
-            create: (_) => Products(null, []),
+            create: (_) => Products(null, null, []),
             update: (ctx, auth, previousProducts) => Products(
               auth.token,
+              auth.userId,
               previousProducts == null ? [] : previousProducts.items,
             ),
           ),

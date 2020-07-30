@@ -43,16 +43,16 @@ class Product with ChangeNotifier {
   /// Toggles this product as a favorite.
   ///
   /// Optimistically updates the favorite on the server.
-  Future<void> toggleFavoriteStatus(String token) async {
+  Future<void> toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
 
     final url =
-        'https://shop-app-flutter-e7a32.firebaseio.com/products/$id.json?auth=$token';
+        'https://shop-app-flutter-e7a32.firebaseio.com/userFavorites/$userId/$id.json?auth=$token';
 
     try {
-      final response = await http.patch(
+      final response = await http.put(
         url,
         body: json.encode({
           'isFavorite': isFavorite,

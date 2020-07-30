@@ -8,6 +8,7 @@ import '../models/http_exception.dart';
 
 class Products with ChangeNotifier {
   final String authToken;
+  final String userId;
 
   List<Product> _items = [
     // Product(
@@ -44,7 +45,7 @@ class Products with ChangeNotifier {
     // ),
   ];
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -62,12 +63,19 @@ class Products with ChangeNotifier {
     final url =
         'https://shop-app-flutter-e7a32.firebaseio.com/products.json?auth=$authToken';
 
+    final favorite_url =
+        'https://shop-app-flutter-e7a32.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) {
         return;
       }
+
+      final favoriteResponse = await http.get(favorite_url);
+      final favoriteData = json.decode(favoriteResponse.body);
+
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -77,7 +85,11 @@ class Products with ChangeNotifier {
             description: prodData['description'],
             price: prodData['price'],
             imageUrl: prodData['imageUrl'],
-            isFavorite: prodData['isFavorite'],
+            isFavorite: favoriteData == null
+                ? false
+                : (favoriteData[prodId] == null
+                    ? false
+                    : favoriteData[prodId]['isFavorite'] ?? false),
           ),
         );
       });
@@ -100,7 +112,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
-          'isFavorite': product.isFavorite,
+          'creatorId': userId,
         }),
       );
 
